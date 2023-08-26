@@ -16,11 +16,11 @@ function getDateDetails(date) {
   // Повертаємо об'єкт, що містить деякі деталі про вхідний об'єкт Date.
   if (typeof date.getTime === "function") {
     const obj = {
-      year: date.getFullYaer(),
-      month: date.getMonth(),
+      year: date.getFullYear(),
+      mouth: date.getMonth(),
       day: date.getDate(),
     };
-    return obg;
+    return obj;
   } else {
     return "Помилка: вхідне значення має бути об'єктом Date";
   }
@@ -320,6 +320,20 @@ function getDaysInMonth(date) {
   // Віднімання одного дня від наступного місяця, щоб отримати останній день поточного місяця.
   // Отримання числа останнього дня поточного місяця - це кількість днів у місяці.
   // Повертаємо об'єкт з початковою датою та кількістю днів у місяці.
+  if (typeof date.getTime === "function") {
+    const inputDate = date;
+    const month = inputDate.getMonth();
+    const nextMonth = month + 1;
+    const year = inputDate.getFullYear();
+    const firstDayNextMonth = new Date(Date.UTC(year, nextMonth, 1));
+    const lastDayInMonth = new Date(
+      Date.UTC(year, nextMonth, firstDayNextMonth.getDate() - 1)
+    );
+    const daysInMonth = lastDayInMonth.getDate();
+    return { inputDate, daysInMonth };
+  } else {
+    return "Помилка: вхідне значення має бути об'єктом Date";
+  }
 }
 console.log("Завдання: 9 ==============================");
 
@@ -348,6 +362,18 @@ function getFormattedTime(date) {
   // Отримання секунд.
   // Форматування часу у вигляді 'гг:хх:сс', ${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.
   // Повертаємо об'єкт з початковою датою та отформатованим часом.
+  if (typeof date.getTime === "function") {
+    const inputDate = date;
+    const hours = inputDate.getHours();
+    const minutes = inputDate.getMinutes();
+    const seconds = inputDate.getSeconds();
+    const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    return { inputDate, formattedTime };
+  } else {
+    return "Помилка: вхідне значення має бути об'єктом Date";
+  }
 }
 console.log("Завдання: 10 ==============================");
 
@@ -376,6 +402,24 @@ function getAge(birthDate) {
   // Якщо день народження ще не пройшов, вік потрібно зменшити на 1.
   // Збереження дати народження для виведення в форматі ISO.
   // Повертаємо об'єкт з датою народження та обчисленим віком.
+  if (typeof birthDate.getTime === "function") {
+    const dateNow = new Date(Date.now());
+    let age = dateNow.getFullYear() - birthDate.getFullYear();
+    if (dateNow.getMonth() <= birthDate.getMonth()) {
+      if (dateNow.getDate() < birthDate.getDate()) {
+        age--;
+        return { birthDate, age };
+      } else if (dateNow.getDate() === birthDate.getDate()) {
+        return `${(birthDate, age)}- День Народження!`;
+      } else {
+        return { birthDate, age };
+      }
+    } else {
+      return { birthDate, age };
+    }
+  } else {
+    return "Помилка: вхідне значення має бути об'єктом Date";
+  }
 }
 console.log("Завдання: 11 ==============================");
 
@@ -403,6 +447,22 @@ function compareDates(date1, date2) {
   // Порівняння дат і отримання результату порівняння: -1, якщо date1 < date2, 0, якщо date1 === date2, 1, якщо date1 > date2.
   // Збереження дат для виведення  в форматі ISO.
   // Повертаємо об'єкт з порівнюваними датами та результатом порівняння.
+  if (
+    typeof date1.getTime === "function" &&
+    typeof date2.getTime === "function"
+  ) {
+    let comparison = null;
+    if (date1 < date2) {
+      comparison = -1;
+    } else if (date1 === date2) {
+      comparison = 0;
+    } else if (date1 > date2) {
+      comparison = 1;
+    }
+    return { date1, date2, comparison };
+  } else {
+    return "Помилка: вхідне значення має бути об'єктом Date";
+  }
 }
 console.log("Завдання: 12 ==============================");
 
@@ -437,6 +497,18 @@ function getDaysDifference(startDate, endDate) {
   // Перетворення різниці в мілісекундах у дні поділивши мілісекунди на (1000 * 60 * 60 * 24).
   // Збереження дат для виведення в форматі ISO.
   // Повертаємо об'єкт з початковою та кінцевою датами та різницею в днях.
+  if (
+    typeof startDate.getTime === "function" &&
+    typeof endDate.getTime === "function"
+  ) {
+    const dateStart = Date.parse(startDate);
+    const dateEnd = Date.parse(endDate);
+    const diff = dateEnd - dateStart;
+    const daysDifference = diff / (1000 * 60 * 60 * 24);
+    return { startDate, endDate, daysDifference };
+  } else {
+    return "Помилка: вхідне значення має бути об'єктом Date";
+  }
 }
 console.log("Завдання: 13 ==============================");
 
